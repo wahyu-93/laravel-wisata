@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\LoginController;
 use App\Http\Controllers\Api\Admin\LogoutController;
+use App\Http\Controllers\Api\Admin\PlaceController;
+use App\Http\Controllers\Api\Admin\SliderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
@@ -34,5 +37,9 @@ Route::prefix('admin')->as('admin.')->group(function(){
         Route::post('/logout', LogoutController::class)->name('logout');
 
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+        Route::apiResource('/categories', CategoryController::class)->except(['create', 'edit']);
+        Route::apiResource('/places', PlaceController::class)->except(['create', 'edit']);
+        Route::apiResource('/sliders', SliderController::class)->except(['create', 'edit', 'show', 'update']);
     });
 });
