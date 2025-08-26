@@ -6,6 +6,10 @@ use App\Http\Controllers\Api\Admin\LoginController;
 use App\Http\Controllers\Api\Admin\LogoutController;
 use App\Http\Controllers\Api\Admin\PlaceController;
 use App\Http\Controllers\Api\Admin\SliderController;
+use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Web\CategoryController as WebCategoryController;
+use App\Http\Controllers\Api\Web\PlaceController as WebPlaceController;
+use App\Http\Controllers\Api\Web\SliderController as WebSliderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
@@ -41,5 +45,17 @@ Route::prefix('admin')->as('admin.')->group(function(){
         Route::apiResource('/categories', CategoryController::class)->except(['create', 'edit']);
         Route::apiResource('/places', PlaceController::class)->except(['create', 'edit']);
         Route::apiResource('/sliders', SliderController::class)->except(['create', 'edit', 'show', 'update']);
+        Route::apiResource('/users', UserController::class)->except(['create', 'edit']);
     });
+});
+
+Route::prefix('web')->as('web.')->group(function(){
+    Route::get('/categories', [WebCategoryController::class, 'index'])->name('web.categories.index');
+    Route::get('/categories/{slug}', [WebCategoryController::class, 'show'])->name('web.categories.show');
+
+    Route::get('/places', [WebPlaceController::class, 'index'])->name('web.place.index');
+    Route::get('/places/{slug}', [WebPlaceController::class, 'show'])->name('web.place.show');
+    Route::get('/all-place', [WebPlaceController::class, 'allPlaces'])->name('web.place.allPlaces');
+
+    Route::get('/sliders', [WebSliderController::class, 'index'])->name('web.sliders.index');
 });
